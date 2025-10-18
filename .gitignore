@@ -11,3 +11,5 @@
 /AuthorizationGateway.Infrastructure/obj
 /AuthorizationGateway.Infra.Tests/bin/Debug/net8.0
 /AuthorizationGateway.Infra.Tests/obj
+/AuthorizationGateway.Core/bin/Debug/net8.0
+/AuthorizationGateway.Infrastructure/bin/Debug/net8.0

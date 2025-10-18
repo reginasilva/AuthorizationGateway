@@ -13,4 +13,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AuthorizationGateway.Core\AuthorizationGateway.Core.csproj" />
+    <ProjectReference Include="..\AuthorizationGateway.Infrastructure\AuthorizationGateway.Infra.csproj" />
+  </ItemGroup>
+
 </Project>

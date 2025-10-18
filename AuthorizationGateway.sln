@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizationGateway.Api", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
 	ProjectSection(SolutionItems) = preProject
-		READ.ME = READ.ME
+		README = README
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizationGateway.Core", "AuthorizationGateway.Core\AuthorizationGateway.Core.csproj", "{72804F2D-407B-468E-AE0D-456FF72BE996}"
@@ -19,6 +19,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizationGateway.Core.Tests", "AuthorizationGateway.Core.Tests\AuthorizationGateway.Core.Tests.csproj", "{40850AA1-43E8-442D-B604-3CB53D2095EF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizationGateway.Infra.Tests", "AuthorizationGateway.Infra.Tests\AuthorizationGateway.Infra.Tests.csproj", "{70BE4089-9E4A-4A1D-B215-F46811996E42}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0FCF5D41-AD5F-4FF7-9F40-F04524D018AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{E43C79F9-79A5-4333-B00B-01D7EC4B4EE1} = {0FCF5D41-AD5F-4FF7-9F40-F04524D018AC}
+		{72804F2D-407B-468E-AE0D-456FF72BE996} = {0FCF5D41-AD5F-4FF7-9F40-F04524D018AC}
+		{3995786C-EBAA-4BB3-B09E-31D819BD4EA3} = {0FCF5D41-AD5F-4FF7-9F40-F04524D018AC}
 		{40850AA1-43E8-442D-B604-3CB53D2095EF} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{70BE4089-9E4A-4A1D-B215-F46811996E42} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection

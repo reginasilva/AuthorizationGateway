@@ -1,0 +1,35 @@
+﻿# 🧾 AuthorizationGateway
+
+### Lightweight EMV Authorization Gateway — .NET 8 Web API
+
+---
+
+## 📘 Overview
+This project simulates a lightweight payment authorization gateway that ingests EMV-like transactions, validates integrity, and applies secure data handling practices around sensitive financial information.
+
+It was developed as part of a backend technical assessment and focuses on **architecture**, **security**, and **code clarity**.
+
+---
+
+## 🧭 Documentation
+Full documentation is available in the **[📚 Project Wiki](../../wiki)**.
+
+The wiki includes:
+- **EMV & TLV Explanation**  
+- **Architecture Overview**  
+- **Security Model**  
+- **API Reference & Examples**  
+- **Testing Strategy**  
+- **Developer Setup (Containers & Local Run)**  
+
+> Visit the [Wiki Home](../../wiki) to explore all sections.
+
+---
+
+## 🐳 Quick Start (Containers)
+To build and run using Docker:
+
+```bash
+docker build -t emv-gateway-api .
+docker run -d -p 8080:8080 --name emv-gateway emv-gateway-api
+```

@@ -1,4 +1,4 @@
-namespace AuthorizationGateway
+namespace AuthorizationGateway.Api
 {
     public class WeatherForecast
     {

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace AuthorizationGateway.Controllers
+namespace AuthorizationGateway.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]

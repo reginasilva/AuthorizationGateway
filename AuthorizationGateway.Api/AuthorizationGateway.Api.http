@@ -1,0 +1,6 @@
+@AuthorizationGateway.Api_HostAddress = http://localhost:5236
+
+GET {{AuthorizationGateway.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

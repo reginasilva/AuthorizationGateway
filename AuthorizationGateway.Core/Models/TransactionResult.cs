@@ -10,6 +10,8 @@ namespace AuthorizationGateway.Core.Models
 
         public string? MaskedPan { get; init; }
 
+        public string? MaskedTrack2 { get; init; }
+
         public DateTime CreatedAtUtc { get; init; }
 
         public DateTime AuthorizedAtUtc { get; init; } = DateTime.UtcNow;

@@ -51,10 +51,12 @@ namespace AuthorizationGateway.Core.Tests.Services
         {
             var amountValue = "000000100100";
             var panAsciiHex = "3132333435363738";
+            var tracked2 = "1234567890123456";
 
             var tlv = string.Concat(
                 TlvHelper.BuildTlv("9F02", amountValue),
-                TlvHelper.BuildTlv("5A", panAsciiHex)
+                TlvHelper.BuildTlv("5A", panAsciiHex),
+                TlvHelper.BuildTlv("57", tracked2) 
             );
 
             var createdAtUtc = DateTime.UtcNow;
@@ -66,6 +68,7 @@ namespace AuthorizationGateway.Core.Tests.Services
             Assert.Equal(TransactionStatus.Declined, result.Status);
             Assert.Equal("Amount exceeds limit", result.Reason);
             Assert.Equal(SensitiveDataMasker.Mask(panAsciiHex), result.MaskedPan);
+            Assert.Equal(SensitiveDataMasker.Mask(tracked2), result.MaskedTrack2);
             Assert.Equal(createdAtUtc, result.CreatedAtUtc);
             Assert.Same(result, repo.LastSaved);
         }

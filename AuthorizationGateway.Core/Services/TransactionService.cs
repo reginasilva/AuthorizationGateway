@@ -24,11 +24,13 @@ namespace AuthorizationGateway.Core.Services
                 : TransactionStatus.Declined;
 
             var maskedPan = SensitiveDataMasker.Mask(tags.GetValueOrDefault("5A"));
+            var maskedTrack2 = SensitiveDataMasker.Mask(tags.GetValueOrDefault("57"));
 
             var result = new TransactionResult
             {
                 CreatedAtUtc = createdAtUtc,
                 MaskedPan = maskedPan,
+                MaskedTrack2 = maskedTrack2,
                 Reason = status == TransactionStatus.Declined ? "Amount exceeds limit" : null,
                 Status = status,
             };

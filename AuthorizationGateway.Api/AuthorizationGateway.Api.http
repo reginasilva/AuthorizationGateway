@@ -6,7 +6,7 @@ POST {{baseUrl}}/transactions
 Content-Type: {{contentType}}
 
 {
-  "emvHex": "9F02060000000001809F150212349F010312349C0100",
+  "emvHex": "9f02060000000001809f150212349f01031234565a051234567890570a0102030405061d2412235f340212349c01005f200212349f0b021234560212349f20021234990212349f4b02123493021234",
   "mode": "plaintext"
 }
 
@@ -15,9 +15,9 @@ POST {{baseUrl}}/transactions
 Content-Type: {{contentType}}
 
 {
-  "emvHex": "ENCRYPTED_BASE64_PAYLOAD",
+  "emvHex": "EXsJ0pKwokAKkpG07s9xFSpEpswTUzTyaQu2NoK0Id2OKdj9H0Mpq1qV+XwQccPnStC36PZqCkEt2uvy1xz5NRBixQ1p4IvCrpqOpfxiAXfoE7kYfEop5l8EV1cLnmyp01RoVN/YKhPVQbUanMKK6RllJfD/XMyT7+TCAvYw1IkwJ6FJ2/tFZ1VzTd93nVSGxqzWrZhcjAuy91OLu4QmSX5Iz3vqguGCN1W0YHqEK+wWbdwT7NUAD3ocHeQf0MPhzPiqbByTG2cK4qYo2O5lGkaGJHo7tX+HhQdhIqz8yyWnmUWyvYbGWyC7MZ1Pt9+9YVHeL0ytKYHzUVxDug==",
   "mode": "encrypted",
-  "signature": "HMAC_SIGNATURE_BASE64"
+  "signature": "L2wZcD3fJBiK54cO8TzQCHpwoGZ5DAtpJgiH7sf6EqY="
 }
 
 

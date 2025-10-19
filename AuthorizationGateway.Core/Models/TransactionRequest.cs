@@ -8,7 +8,9 @@ namespace AuthorizationGateway.Core.Models
     public class TransactionRequest
     {
         public required string EmvHex { get; set; }
+
         public PayloadProtectionMode PayloadProtection { get; set; }
+
         public required string Signature { get; set; }
     }
 }

@@ -8,14 +8,15 @@ namespace AuthorizationGateway.Api.Controllers
     [Route("api/[controller]")]
     public class TransactionsController : ControllerBase
     {
+        private readonly IEncryptionService _aesEncryptionService;
         private readonly IIntegrityService _integrityService;
         private readonly ITransactionService _transactionService;
         private readonly ILogger<TransactionsController> _logger;
 
-        public TransactionsController(IIntegrityService integrityService,
-                                      ITransactionService transactionService,
-                                      ILogger<TransactionsController> logger)
+        public TransactionsController(IEncryptionService aesEncryptionService, IIntegrityService integrityService,
+                                ITransactionService transactionService, ILogger<TransactionsController> logger)
         {
+            _aesEncryptionService = aesEncryptionService;
             _integrityService = integrityService;
             _transactionService = transactionService;
             _logger = logger;
@@ -43,6 +44,12 @@ namespace AuthorizationGateway.Api.Controllers
                 return BadRequest(new { error = "Invalid signature or tampered data" });
             }
 
+            if (request.PayloadProtection == Core.Enums.PayloadProtectionMode.Encrypted)
+            {
+                request.EmvHex = _aesEncryptionService.Decrypt(request.EmvHex);
+                _logger.LogInformation("Decrypted emvHex");
+            }
+
             var result = _transactionService.Process(request.EmvHex, createdAtUtc);
 
             _logger.LogInformation("Transaction {Id} created at {CreatedAt} authorized at {AuthorizedAt} with status {Status}",
@@ -58,7 +65,7 @@ namespace AuthorizationGateway.Api.Controllers
         public IActionResult GetTransaction(Guid id)
         {
             var transaction = _transactionService.GetById(id);
-           
+
             if (transaction == null)
             {
                 _logger.LogWarning("Transaction {Id} not found", id);

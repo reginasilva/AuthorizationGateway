@@ -26,7 +26,9 @@ namespace AuthorizationGateway.Infra.Crypto
         public bool Validate(string data, string signature)
         {
             using var hmac = new HMACSHA256(_key);
+            
             var computed = Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(data)));
+
             return computed == signature;
         }
     }

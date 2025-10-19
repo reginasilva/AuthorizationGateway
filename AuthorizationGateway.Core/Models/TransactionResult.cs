@@ -2,6 +2,9 @@
 
 namespace AuthorizationGateway.Core.Models
 {
+    /// <summary>
+    /// Represents the result of a financial transaction, including its status, identifiers, and related metadata.
+    /// </summary>
     public class TransactionResult
     {
         public Guid TransactionId { get; init; } = Guid.NewGuid();

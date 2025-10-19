@@ -143,5 +143,33 @@ namespace AuthorizationGateway.Core.Tests.Utils
             Assert.True(tags.ContainsKey("93"));
             Assert.Equal("1234", tags["93"]);
         }
+
+        [Fact]
+        public void Parse_Throws_On_TruncatedHeader()
+        {
+            // "5A" only tag bytes but missing length/value -> parser should throw due to substring bounds
+            Assert.Throws<ArgumentOutOfRangeException>(() => TlvParser.Parse("5A"));
+        }
+
+        [Fact]
+        public void Parse_Throws_On_IncorrectLength_ForValue()
+        {
+            // length byte indicates 3 (0x03 -> 3 bytes = 6 hex chars) but only provide 2 hex chars as value
+            var malformed = "5A03AA";
+            Assert.Throws<ArgumentOutOfRangeException>(() => TlvParser.Parse(malformed));
+        }
+
+        [Fact]
+        public void Parse_Normalizes_MixedCase_Tags()
+        {
+            var panAsciiHex = "3132333435363738";
+            var tlv = TlvHelper.BuildTlv("9f02", "1000") + TlvHelper.BuildTlv("5a", panAsciiHex);
+
+            var tags = TlvParser.Parse(tlv);
+
+            Assert.True(tags.ContainsKey("9F02"));
+            Assert.True(tags.ContainsKey("5A"));
+            Assert.Equal(panAsciiHex, tags["5A"]);
+        }
     }
 }

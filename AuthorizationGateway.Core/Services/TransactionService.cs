@@ -5,6 +5,9 @@ using AuthorizationGateway.Core.Utils;
 
 namespace AuthorizationGateway.Core.Services
 {
+    /// <summary>
+    /// Provides services for processing and retrieving transaction data.
+    /// </summary>
     public class TransactionService : ITransactionService
     {
         private readonly ITransactionRepository _repository;

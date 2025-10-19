@@ -2,6 +2,9 @@
 
 namespace AuthorizationGateway.Core.Interfaces
 {
+    /// <summary>
+    /// Defines methods for processing and retrieving transactions.
+    /// </summary>
     public interface ITransactionService
     {
         /// <summary>

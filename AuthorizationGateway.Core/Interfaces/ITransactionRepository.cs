@@ -2,6 +2,9 @@
 
 namespace AuthorizationGateway.Core.Interfaces
 {
+    /// <summary>
+    /// Defines a contract for managing transaction results in a persistent storage.
+    /// </summary>
     public interface ITransactionRepository
     {
         /// <summary>

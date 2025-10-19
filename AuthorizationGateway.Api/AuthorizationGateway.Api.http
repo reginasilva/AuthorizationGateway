@@ -1,6 +1,26 @@
-@AuthorizationGateway.Api_HostAddress = http://localhost:5236
+﻿@baseUrl = https://localhost:5236
+@contentType = application/json
 
-GET {{AuthorizationGateway.Api_HostAddress}}/weatherforecast/
+#  Submit plaintext transaction
+POST {{baseUrl}}/transactions
+Content-Type: {{contentType}}
+
+{
+  "emvHex": "9F02060000000001809F150212349F010312349C0100",
+  "mode": "plaintext"
+}
+
+#  Submit encrypted transaction
+POST {{baseUrl}}/transactions
+Content-Type: {{contentType}}
+
+{
+  "emvHex": "ENCRYPTED_BASE64_PAYLOAD",
+  "mode": "encrypted",
+  "signature": "HMAC_SIGNATURE_BASE64"
+}
+
+
+#  Retrieve transaction
+GET {{baseUrl}}/transactions/{{lastTransactionId}}
 Accept: application/json
-
-###

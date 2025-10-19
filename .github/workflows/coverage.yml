@@ -1,0 +1,52 @@
+name: CI - Tests & Coverage
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-and-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Run tests and collect coverage
+        run: dotnet test --verbosity normal --collect:"XPlat Code Coverage"
+
+      - name: Install ReportGenerator tool
+        run: dotnet tool install -g dotnet-reportgenerator-globaltool || true
+
+      - name: Generate coverage report
+        run: |
+          reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"coverage-report" -reporttypes:HtmlSummary,TextSummary
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage-report
+
+      - name: Fail if coverage below threshold (optional)
+        run: |
+          COVERAGE=$(grep -m1 "Overall coverage" coverage-report/Summary.txt | sed -E 's/.*: *([0-9]+)%.*$/\1/')
+          echo "Coverage: $COVERAGE%"
+          THRESHOLD=80
+          if [ -z "$COVERAGE" ]; then
+            echo "Could not determine coverage" >&2
+            exit 1
+          fi
+          if [ "$COVERAGE" -lt "$THRESHOLD" ]; then
+            echo "Coverage $COVERAGE% is below threshold $THRESHOLD%" >&2
+            exit 1
+          fi

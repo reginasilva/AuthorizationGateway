@@ -158,5 +158,41 @@ namespace AuthorizationGateway.Core.Tests.Services
             Assert.Equal(preSaved.TransactionId, got!.TransactionId);
             Assert.Same(preSaved, got);
         }
+
+        [Fact]
+        public void GetAll_NoneTransactions()
+        {
+            var repo = new FakeRepository();
+
+            var svc = new TransactionService(repo);
+
+            var got = svc.GetAll();
+
+            Assert.NotNull(got);
+            Assert.Empty(got);
+        }
+
+        [Fact]
+        public void GetAll_ReturnTransactions()
+        {
+            var repo = new FakeRepository();
+
+            var preSaved = new TransactionResult
+            {
+                CreatedAtUtc = DateTime.UtcNow,
+                MaskedPan = "1234********5678",
+                Status = TransactionStatus.Approved
+            };
+
+            repo.Save(preSaved);
+            repo.Save(preSaved);
+
+            var svc = new TransactionService(repo);
+
+            var got = svc.GetAll();
+
+            Assert.NotNull(got);
+            Assert.Equal(2, got.Count);
+        }
     }
 }

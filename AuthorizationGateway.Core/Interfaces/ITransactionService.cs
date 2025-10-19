@@ -16,5 +16,14 @@ namespace AuthorizationGateway.Core.Interfaces
         /// Get transaction by its identifier.
         /// </summary>
         TransactionResult? GetById(Guid id);
+
+        /// <summary>
+        /// Retrieves all transaction results.
+        /// </summary>
+        /// <returns>
+        /// A list of <see cref="TransactionResult"/> objects representing all transactions. <br/>
+        /// The list will be empty if no transactions are available.
+        /// </returns>
+        List<TransactionResult> GetAll();
     }
 }

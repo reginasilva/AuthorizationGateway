@@ -1,26 +1,55 @@
 ﻿@baseUrl = https://localhost:5236
 @contentType = application/json
 
-#  Submit plaintext transaction
+#  Submit plaintext transaction that will be approved
 POST {{baseUrl}}/transactions
 Content-Type: {{contentType}}
 
 {
   "emvHex": "9f02060000000001809f150212349f01031234565a051234567890570a0102030405061d2412235f340212349c01005f200212349f0b021234560212349f20021234990212349f4b02123493021234",
-  "mode": "plaintext"
+  "payloadProtection": 0,
+  "signature": "LwGkwhqQZ0qtnhqxfge5pMaPWkT59khXTs93HbpnD8A="
 }
 
+###
+#  Submit plaintext transaction that will be declined
+POST {{baseUrl}}/transactions
+Content-Type: {{contentType}}
+
+{
+  "emvHex": "9F02060000001001009F150212349F01031234565A051234567890",
+  "payloadProtection": 0,
+  "signature": "rWWdgqKmodG6iWIozMPlHKxN3NJjXOvFbIj2zMS1pdg="
+}
+
+###
+#  Submit plaintext transaction with invalid signature
+POST {{baseUrl}}/transactions
+Content-Type: {{contentType}}
+
+{
+  "emvHex": "9F02060000001001009F150212349F01031234565A051234567890",
+  "payloadProtection": 0,
+  "signature": "rWWdgqKmodG6iWIozMPlHxN3NJjXOvFbIj2zMS1pdg="
+}
+
+###
 #  Submit encrypted transaction
 POST {{baseUrl}}/transactions
 Content-Type: {{contentType}}
 
 {
   "emvHex": "EXsJ0pKwokAKkpG07s9xFSpEpswTUzTyaQu2NoK0Id2OKdj9H0Mpq1qV+XwQccPnStC36PZqCkEt2uvy1xz5NRBixQ1p4IvCrpqOpfxiAXfoE7kYfEop5l8EV1cLnmyp01RoVN/YKhPVQbUanMKK6RllJfD/XMyT7+TCAvYw1IkwJ6FJ2/tFZ1VzTd93nVSGxqzWrZhcjAuy91OLu4QmSX5Iz3vqguGCN1W0YHqEK+wWbdwT7NUAD3ocHeQf0MPhzPiqbByTG2cK4qYo2O5lGkaGJHo7tX+HhQdhIqz8yyWnmUWyvYbGWyC7MZ1Pt9+9YVHeL0ytKYHzUVxDug==",
-  "mode": "encrypted",
+  "payloadProtection": 1,
   "signature": "L2wZcD3fJBiK54cO8TzQCHpwoGZ5DAtpJgiH7sf6EqY="
 }
 
-
+###
 #  Retrieve transaction
 GET {{baseUrl}}/transactions/{{lastTransactionId}}
+Accept: application/json
+
+###
+#  Retrieve all transactions
+GET {{baseUrl}}/transactions
 Accept: application/json

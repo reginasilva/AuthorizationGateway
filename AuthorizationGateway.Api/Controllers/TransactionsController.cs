@@ -31,6 +31,8 @@ namespace AuthorizationGateway.Api.Controllers
         /// - Returns 400 Bad Request response with an error message if the validation fails.
         /// </returns>
         [HttpPost("authorize")]
+        [ProducesResponseType(typeof(TransactionResult), 200)]
+        [ProducesResponseType(400)]
         public IActionResult AuthorizeTransaction([FromBody] TransactionRequest request)
         {
             var createdAtUtc = DateTime.UtcNow;
@@ -62,6 +64,7 @@ namespace AuthorizationGateway.Api.Controllers
         /// Gets the transaction info by its unique identifier.
         /// </summary>
         [HttpGet("{id:guid}")]
+        [ProducesResponseType(typeof(TransactionResult), 200)]
         public IActionResult GetTransaction(Guid id)
         {
             var transaction = _transactionService.GetById(id);
@@ -76,6 +79,29 @@ namespace AuthorizationGateway.Api.Controllers
             _logger.LogInformation("Transaction {Id} retrieved with status {Status}", id, transaction.Status);
 
             return Ok(transaction);
+        }
+
+        /// <summary>
+        /// Get all transactions.
+        /// </summary>
+        [HttpGet]
+        [ProducesResponseType(typeof(IList<TransactionResult>), 200)]
+        public IActionResult GetAll()
+        {
+            var transactions = _transactionService.GetAll();
+
+            var result = transactions.Select(tx => new
+            {
+                tx.TransactionId,
+                tx.Status,
+                tx.Reason,
+                tx.MaskedPan,
+                tx.MaskedTrack2,
+                tx.CreatedAtUtc,
+                tx.AuthorizedAtUtc
+            });
+
+            return Ok(result);
         }
     }
 }

@@ -17,5 +17,10 @@ namespace AuthorizationGateway.Core.Interfaces
         /// Gets the transaction result by its unique identifier.
         /// </summary>
         TransactionResult? Get(Guid id);
+
+        /// <summary>
+        /// Gets all the transactions.
+        /// </summary>
+        List<TransactionResult> GetAll();
     }
 }

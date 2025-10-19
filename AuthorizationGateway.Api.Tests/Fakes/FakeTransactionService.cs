@@ -17,5 +17,7 @@ namespace AuthorizationGateway.Api.Tests.Controllers
         }
 
         public TransactionResult? GetById(Guid id) => NextResult?.TransactionId == id ? NextResult : null;
+
+        public List<TransactionResult> GetAll() => NextResult != null ? new List<TransactionResult> { NextResult } : new List<TransactionResult>();
     }
 }

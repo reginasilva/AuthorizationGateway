@@ -47,5 +47,10 @@ namespace AuthorizationGateway.Core.Services
         {
             return _repository.Get(id);
         }
+
+        public List<TransactionResult> GetAll()
+        {
+            return _repository.GetAll();
+        }
     }
 }

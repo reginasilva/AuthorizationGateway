@@ -20,9 +20,17 @@ builder.Services.AddSwaggerGen();
 // Add services to the container.
 builder.Services.AddControllers();
 
+// Add Razor compilation
+builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddHttpClient("api", c =>
+{
+    c.BaseAddress = new Uri(builder.Configuration["ApiBaseUrl"] ?? "https://localhost:5236/");
+});
 
 var app = builder.Build();
 
@@ -34,6 +42,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
+app.MapRazorPages();
 
 app.UseAuthorization();
 

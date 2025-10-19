@@ -7,6 +7,8 @@ namespace AuthorizationGateway.Core.Tests.Services
     {
         private class FakeRepository : ITransactionRepository
         {
+
+            public List<TransactionResult>? Transactions { get; private set; }
             public TransactionResult? LastSaved { get; private set; }
 
             public void Save(TransactionResult transaction)
@@ -22,6 +24,10 @@ namespace AuthorizationGateway.Core.Tests.Services
                 }
 
                 return LastSaved.TransactionId == id ? LastSaved : null;
+            }
+            public List<TransactionResult> GetAll()
+            {
+                return Transactions ?? new List<TransactionResult>();
             }
         }
     }

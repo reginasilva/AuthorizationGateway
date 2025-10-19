@@ -1,27 +1,27 @@
 ﻿using AuthorizationGateway.Core.Models;
-using Microsoft.Extensions.Caching.Memory;
+using System.Collections.Concurrent;
 
 namespace AuthorizationGateway.Infra.Persistence
 {
     public class InMemoryTransactionRepository : Core.Interfaces.ITransactionRepository
     {
-        private readonly IMemoryCache _cache;
-
-        public InMemoryTransactionRepository(IMemoryCache cache)
-        {
-            _cache = cache;
-        }
+        private readonly ConcurrentDictionary<Guid, TransactionResult> _transactions = new();
 
         public void Save(TransactionResult transaction)
         {
-            _cache.Set(transaction.TransactionId, transaction, TimeSpan.FromMinutes(10));
+            _transactions[transaction.TransactionId] = transaction;
         }
 
         public TransactionResult? Get(Guid id)
         {
-            _cache.TryGetValue(id, out TransactionResult? transaction);
+            _transactions.TryGetValue(id, out var transaction);
 
             return transaction;
+        }
+
+        public List<TransactionResult> GetAll()
+        {
+            return _transactions.Values.ToList();
         }
     }
 }

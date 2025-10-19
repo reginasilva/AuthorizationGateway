@@ -17,18 +17,37 @@
         {
             var tags = new Dictionary<string, string>();
 
+            if (string.IsNullOrWhiteSpace(emvHex) ||
+                emvHex.Length < 2)
+            {
+                return tags;
+            }
+
             for (int i = 0; i < emvHex.Length;)
             {
-                // Tag: first two positions (5A, 9F, etc.)
-                var tag = emvHex.Substring(i, 2);
-                i += 2;
+                string tag = string.Empty;
+                bool hasMoreBytes;
 
-                // Tag value size (9F02 -> 02 means 2 bytes = 4 hex chars)
+                do
+                {
+                    // Tag: get 2 positions (5A)
+                    tag += emvHex.Substring(i, 2).ToUpper();
+
+                    int currentByte = Convert.ToInt32(emvHex.Substring(i, 2), 16);
+                    i += 2;
+
+                    // se bits 5–1 == 11111 → tag continua
+                    hasMoreBytes = (currentByte & 0x1F) == 0x1F;
+
+                } while (hasMoreBytes);
+                
+                // TLV - o lenght value size (5A02 -> 02 means 2 bytes = 4 hex chars)
                 var lengthHex = emvHex.Substring(i, 2);
                 i += 2;
 
                 // Calculate length and extract value
-                var length = Convert.ToInt32(lengthHex, 16) * 2;
+                var length = Convert.ToInt32(lengthHex, 16) *2;
+               
                 var value = emvHex.Substring(i, length);
 
                 // Move to the beginning of the next tag

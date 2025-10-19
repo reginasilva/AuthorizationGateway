@@ -7,7 +7,14 @@ namespace AuthorizationGateway.Core.Services
 {
     public class TransactionService : ITransactionService
     {
-        public TransactionResult Process(string emvHex)
+        private readonly ITransactionRepository _repository;
+
+        public TransactionService(ITransactionRepository repository)
+        {
+            _repository = repository;
+        }
+
+        public TransactionResult Process(string emvHex, DateTime createdAtUtc)
         {
             var tags = TlvParser.Parse(emvHex);
             var amount = int.Parse(tags.GetValueOrDefault("9F02", "0"));
@@ -18,11 +25,22 @@ namespace AuthorizationGateway.Core.Services
 
             var maskedPan = SensitiveDataMasker.Mask(tags.GetValueOrDefault("5A"));
 
-            return new TransactionResult
+            var result = new TransactionResult
             {
+                CreatedAtUtc = createdAtUtc,
+                MaskedPan = maskedPan,
+                Reason = status == TransactionStatus.Declined ? "Amount exceeds limit" : null,
                 Status = status,
-                MaskedPan = maskedPan
             };
+
+            _repository.Save(result);
+
+            return result;
+        }
+
+        public TransactionResult? GetById(Guid id)
+        {
+            return _repository.Get(id);
         }
     }
 }

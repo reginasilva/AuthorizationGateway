@@ -1,13 +1,17 @@
 using AuthorizationGateway.Core.Interfaces;
+using AuthorizationGateway.Core.Services;
 using AuthorizationGateway.Infra.Crypto;
+using AuthorizationGateway.Infra.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
 
-// Register the HmacIntegrityService with a demo secret key.
+// Dependency Injection
 builder.Services.AddSingleton<IIntegrityService>(new HmacIntegrityService("demo-secret-key"));
+builder.Services.AddSingleton<ITransactionRepository, InMemoryTransactionRepository>();
+builder.Services.AddSingleton<ITransactionService, TransactionService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

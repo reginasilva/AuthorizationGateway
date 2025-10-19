@@ -7,6 +7,11 @@ namespace AuthorizationGateway.Core.Interfaces
         /// <summary>
         /// Processes an EMV transaction represented in hexadecimal format.
         /// </summary>
-        TransactionResult Process(string emvHex);
+        TransactionResult Process(string emvHex, DateTime createdAtUtc);
+
+        /// <summary>
+        /// Get transaction by its identifier.
+        /// </summary>
+        TransactionResult? GetById(Guid id);
     }
 }

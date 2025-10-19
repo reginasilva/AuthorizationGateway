@@ -9,28 +9,66 @@ namespace AuthorizationGateway.Api.Controllers
     public class TransactionsController : ControllerBase
     {
         private readonly IIntegrityService _integrityService;
+        private readonly ITransactionService _transactionService;
+        private readonly ILogger<TransactionsController> _logger;
 
-        //private readonly ILogger<TransactionsController> _logger;
-
-        public TransactionsController(IIntegrityService integrityService)
+        public TransactionsController(IIntegrityService integrityService,
+                                      ITransactionService transactionService,
+                                      ILogger<TransactionsController> logger)
         {
             _integrityService = integrityService;
+            _transactionService = transactionService;
+            _logger = logger;
         }
 
         /// <summary>
-        /// Processes a transaction request by validating its integrity.
+        /// Authorizes a transaction by validating its integrity and ensuring the request data has not been tampered with.
         /// </summary>
-        [HttpPost]
-        public IActionResult ProcessTransaction([FromBody] TransactionRequest request)
+        /// <returns>
+        /// An <see cref="IActionResult"/> indicating the result of the authorization process.  <br/>
+        /// - Returns a 200 OK response with a status of "IntegrityValidated" if the request passes validation <br/>
+        /// - Returns 400 Bad Request response with an error message if the validation fails.
+        /// </returns>
+        [HttpPost("authorize")]
+        public IActionResult AuthorizeTransaction([FromBody] TransactionRequest request)
         {
-            // Step 1: Validate integrity to avoid cheating.
+            var createdAtUtc = DateTime.UtcNow;
+
             var valid = _integrityService.Validate(request.EmvHex, request.Signature);
 
             if (!valid)
-                return BadRequest(new { error = "Invalid signature or tampered data" });
+            {
+                _logger.LogWarning("Integrity validation failed for request received at {CreateAt} with signature {Signature}", createdAtUtc, request.Signature);
 
-            // Step 2: Placeholder for next step (parsing + decision)
-            return Ok(new { status = "IntegrityValidated" });
+                return BadRequest(new { error = "Invalid signature or tampered data" });
+            }
+
+            var result = _transactionService.Process(request.EmvHex, createdAtUtc);
+
+            _logger.LogInformation("Transaction {Id} created at {CreatedAt} authorized at {AuthorizedAt} with status {Status}",
+                                    result.TransactionId, result.CreatedAtUtc, result.AuthorizedAtUtc, result.Status);
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Gets the transaction info by its unique identifier.
+        /// </summary>
+        [HttpGet("{id:guid}")]
+        public IActionResult GetTransaction(Guid id)
+        {
+            var transaction = _transactionService.GetById(id);
+           
+            if (transaction == null)
+            {
+                _logger.LogWarning("Transaction {Id} not found", id);
+
+                return NotFound(new { error = "Transaction not found" });
+            }
+
+            _logger.LogInformation("Transaction {Id} retrieved with status {Status}", id, transaction.Status);
+
+            return Ok(transaction);
         }
     }
 }

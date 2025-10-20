@@ -20,7 +20,7 @@ Short checklist and instructions to run the project and tests.
 ## Run in containers
 ### Prerequisites
 - Requires Docker.
-- 
+
 ### Steps
 - Build:
   - `docker build -t emv-gateway-api .`

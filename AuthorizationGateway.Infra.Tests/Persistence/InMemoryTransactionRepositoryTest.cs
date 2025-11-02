@@ -9,8 +9,7 @@ namespace AuthorizationGateway.Infra.Tests.Persistence
     {
         private static InMemoryTransactionRepository CreateRepository()
         {
-            var memoryCache = new MemoryCache(new MemoryCacheOptions());
-            return new InMemoryTransactionRepository(memoryCache);
+            return new InMemoryTransactionRepository();
         }
 
         [Fact]

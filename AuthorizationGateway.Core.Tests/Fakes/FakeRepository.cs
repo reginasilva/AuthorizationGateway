@@ -8,12 +8,13 @@ namespace AuthorizationGateway.Core.Tests.Services
         private class FakeRepository : ITransactionRepository
         {
 
-            public List<TransactionResult>? Transactions { get; private set; }
+            public List<TransactionResult>? Transactions { get; private set; } = new List<TransactionResult>();
             public TransactionResult? LastSaved { get; private set; }
 
             public void Save(TransactionResult transaction)
             {
                 LastSaved = transaction;
+                Transactions.Add(transaction);
             }
 
             public TransactionResult? Get(Guid id)
